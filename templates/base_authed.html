@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load menu_tags %}
+{% block body %}
+<div class="d-flex min-vh-100">
+  <aside class="bg-dark text-white p-3" style="width: 240px; min-width: 240px;">
+    <h5 class="mb-4">VitalPortal</h5>
+    {% main_menu %}
+    <hr class="border-secondary">
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-light btn-sm w-100">Abmelden ({{ user.username }})</button>
+    </form>
+  </aside>
+  <main class="flex-grow-1 p-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

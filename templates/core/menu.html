@@ -1,0 +1,8 @@
+<ul class="nav flex-column">
+  {% for item in menu_items %}
+    <li class="nav-item">
+      <a class="nav-link text-white {% if item.active %}fw-bold bg-secondary rounded{% endif %}"
+         href="{{ item.url }}">{{ item.label }}</a>
+    </li>
+  {% endfor %}
+</ul>

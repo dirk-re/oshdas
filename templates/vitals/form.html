@@ -1,0 +1,12 @@
+{% extends "base_authed.html" %}
+{% block title %}Vitalwerte erfassen{% endblock %}
+{% block content %}
+<h1>Vitalwerte erfassen</h1>
+<form method="post" class="row g-3" style="max-width: 480px;">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Speichern</button>
+  </div>
+</form>
+{% endblock %}

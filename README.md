@@ -14,6 +14,14 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+Alternativ startet `./start.sh` den Server und exportiert vorher alle
+Variablen aus `.env` (das Projekt liest `.env` nicht von allein):
+
+```bash
+./start.sh                  # wie: runserver 0.0.0.0:8000
+./start.sh 127.0.0.1:8000   # eigene Adresse/Port
+```
+
 ## Konfiguration (.env)
 
 Alle sensiblen Werte werden aus Umgebungsvariablen gelesen (Vorlage:

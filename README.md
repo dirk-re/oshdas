@@ -25,6 +25,7 @@ lokale Entwicklung.
 | `DJANGO_SECRET_KEY` | Geheimer Schlüssel (erzeugen mit `get_random_secret_key()`) |
 | `DJANGO_DEBUG` | `1` = Development, `0` = Production |
 | `DJANGO_ALLOWED_HOSTS` | Komma-getrennte erlaubte Hosts |
+| `DJANGO_CSRF_TRUSTED_ORIGINS` | Komma-getrennte vertraute Origins **mit Schema**, z. B. `https://100.64.0.10:8000` (sonst schlägt die CSRF-Prüfung mit 403 fehl) |
 | `DATABASE_URL` | `postgres://user:passwort@host:port/dbname` |
 
 ## TimescaleDB

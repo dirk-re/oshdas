@@ -1,15 +1,22 @@
-from django.conf import settings
 from django.db import migrations
 
+HYPERTABLES = {"vitals_vitalmeasurement": "measured_at"}
 
-def convert_to_hypertable(apps, schema_editor):
+
+def convert_to_hypertables(apps, schema_editor):
     if not _is_timescale(schema_editor.connection):
         return
-    for model in apps.get_app_config("vitals").get_models():
-        table = model._meta.db_table
+    for table, time_column in HYPERTABLES.items():
         schema_editor.execute(
-            f'SELECT create_hypertable(\'"{table}"\', \'measured_at\', '
+            f'ALTER TABLE "{table}" DROP CONSTRAINT IF EXISTS "{table}_pkey";'
+        )
+        schema_editor.execute(
+            f'SELECT create_hypertable(\'"{table}"\', \'{time_column}\', '
             f"if_not_exists => TRUE, migrate_data => TRUE);"
+        )
+        schema_editor.execute(
+            f'ALTER TABLE "{table}" ADD CONSTRAINT "{table}_pkey" '
+            f'PRIMARY KEY ("id", "{time_column}");'
         )
 
 
@@ -25,4 +32,4 @@ def _is_timescale(connection):
 
 class Migration(migrations.Migration):
     dependencies = [("vitals", "0001_initial")]
-    operations = [migrations.RunPython(convert_to_hypertable, migrations.RunPython.noop)]
+    operations = [migrations.RunPython(convert_to_hypertables, migrations.RunPython.noop)]

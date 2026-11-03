@@ -9,14 +9,15 @@ Django-Projekt mit Login, Menü und Erfassung von Vitalwerten und Gemütszustand
 ```bash
 pip install -r requirements.txt
 cp .env.example .env        # Werte anpassen (siehe unten)
-python manage.py migrate                      # Projekt-DB (SQLite: User, Sessions, MoodQuestion)
-python manage.py migrate --database=timescale # Anwendungsdaten (Vitalwerte, MoodRecord/MoodAnswer)
-python manage.py createsuperuser
-python manage.py runserver
+./manage.sh migrate                       # Projekt-DB (SQLite: User, Sessions, MoodQuestion)
+./manage.sh migrate --database=timescale  # Anwendungsdaten (Vitalwerte, MoodRecord/MoodAnswer)
+./manage.sh createsuperuser
+./manage.sh runserver
 ```
 
-Alternativ startet `./start.sh` den Server und exportiert vorher alle
-Variablen aus `.env` (das Projekt liest `.env` nicht von allein):
+`./manage.sh` und `./start.sh` exportieren vorher alle Variablen aus `.env`
+(das Projekt liest `.env` nicht von allein) – so sehen CLI und Server immer
+dieselbe Konfiguration. `./start.sh` startet direkt den Server:
 
 ```bash
 ./start.sh                  # wie: runserver 0.0.0.0:8000

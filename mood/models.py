@@ -42,7 +42,7 @@ class MoodRecord(models.Model):
 
 class MoodAnswer(models.Model):
     record = models.ForeignKey(
-        MoodRecord, on_delete=models.CASCADE, related_name="answers"
+        MoodRecord, on_delete=models.CASCADE, related_name="answers", db_constraint=False
     )
     question = models.ForeignKey(
         MoodQuestion, on_delete=models.PROTECT, db_constraint=False

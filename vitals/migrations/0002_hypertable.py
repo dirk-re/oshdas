@@ -8,7 +8,7 @@ def convert_to_hypertables(apps, schema_editor):
         return
     for table, time_column in HYPERTABLES.items():
         schema_editor.execute(
-            f'ALTER TABLE "{table}" DROP CONSTRAINT IF EXISTS "{table}_pkey";'
+            f'ALTER TABLE "{table}" DROP CONSTRAINT IF EXISTS "{table}_pkey" CASCADE;'
         )
         schema_editor.execute(
             f'SELECT create_hypertable(\'"{table}"\', \'{time_column}\', '

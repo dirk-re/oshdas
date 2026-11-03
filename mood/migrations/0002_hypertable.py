@@ -7,7 +7,7 @@ def convert_to_hypertables(apps, schema_editor):
         return
     for model in apps.get_app_config("mood").get_models():
         table = model._meta.db_table
-        if model._meta.model_name == "moodanswer":
+        if model._meta.model_name == "moodrecord":
             schema_editor.execute(
                 f'SELECT create_hypertable(\'"{table}"\', \'recorded_at\', '
                 f"if_not_exists => TRUE, migrate_data => TRUE);"

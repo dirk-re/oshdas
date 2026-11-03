@@ -6,6 +6,7 @@ class VitalMeasurement(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name="Benutzer",
     )
     measured_at = models.DateTimeField("Zeitstempel", auto_now_add=True)

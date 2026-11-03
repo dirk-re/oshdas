@@ -9,7 +9,8 @@ Django-Projekt mit Login, Menü und Erfassung von Vitalwerten und Gemütszustand
 ```bash
 pip install -r requirements.txt
 cp .env.example .env        # Werte anpassen (siehe unten)
-python manage.py migrate
+python manage.py migrate                      # Projekt-DB (SQLite: User, Sessions, MoodQuestion)
+python manage.py migrate --database=timescale # Anwendungsdaten (Vitalwerte, MoodRecord/MoodAnswer)
 python manage.py createsuperuser
 python manage.py runserver
 ```
@@ -34,9 +35,15 @@ lokale Entwicklung.
 | `DJANGO_DEBUG` | `1` = Development, `0` = Production |
 | `DJANGO_ALLOWED_HOSTS` | Komma-getrennte erlaubte Hosts |
 | `DJANGO_CSRF_TRUSTED_ORIGINS` | Komma-getrennte vertraute Origins **mit Schema**, z. B. `https://100.64.0.10:8000` (sonst schlägt die CSRF-Prüfung mit 403 fehl) |
-| `DATABASE_URL` | `postgres://user:passwort@host:port/dbname` |
+| `DATABASE_URL` | TimescaleDB/PostgreSQL für die Anwendungsdaten: `postgres://user:passwort@host:port/dbname`. Ohne Angabe: SQLite-Fallback `db_timescale.sqlite3` |
 
 ## TimescaleDB
+
+Zwei Datenbanken (siehe `vitalportal/routers.py`): `default` ist die
+Projekt-Datenbank (SQLite `db.sqlite3`: User, Sessions, Admin,
+`mood_moodquestion`). `timescale` (via `DATABASE_URL`) ist die
+TimescaleDB für die Anwendungsdaten (`vitals_vitalmeasurement`,
+`mood_moodrecord`, `mood_moodanswer`).
 
 Die Migrationen `vitals/migrations/0002_hypertable.py` und
 `mood/migrations/0002_hypertable.py` konvertieren die Tabellen

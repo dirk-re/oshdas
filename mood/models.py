@@ -28,6 +28,7 @@ class MoodRecord(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_constraint=False,
         verbose_name="Benutzer",
     )
     recorded_at = models.DateTimeField("Zeitstempel", auto_now_add=True)
@@ -43,7 +44,9 @@ class MoodAnswer(models.Model):
     record = models.ForeignKey(
         MoodRecord, on_delete=models.CASCADE, related_name="answers"
     )
-    question = models.ForeignKey(MoodQuestion, on_delete=models.PROTECT)
+    question = models.ForeignKey(
+        MoodQuestion, on_delete=models.PROTECT, db_constraint=False
+    )
     value = models.PositiveSmallIntegerField("Antwort", choices=MOOD_CHOICES)
 
     class Meta:

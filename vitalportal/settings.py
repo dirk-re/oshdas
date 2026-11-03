@@ -65,19 +65,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "vitalportal.wsgi.application"
 
-# TimescaleDB (PostgreSQL) configuration. Falls keine Datenbank-URL gesetzt
-# ist, greift der SQLite-Fallback (z. B. fuer lokale Entwicklung ohne DB).
+# default = Projekt-Datenbank (User, Sessions, Admin, MoodQuestion) als SQLite.
+# timescale = TimescaleDB/PostgreSQL fuer Anwendungsdaten (Vitalwerte,
+# MoodRecord/MoodAnswer) via DATABASE_URL; ohne DATABASE_URL SQLite-Fallback.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if DATABASE_URL:
     import dj_database_url
-    DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
+    DATABASES["timescale"] = dj_database_url.parse(DATABASE_URL)
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+    DATABASES["timescale"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db_timescale.sqlite3",
     }
+
+DATABASE_ROUTERS = ["vitalportal.routers.TimescaleRouter"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
